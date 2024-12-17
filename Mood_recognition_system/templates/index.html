@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emotion Recognition</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #bg {
+      border: 5px solid #555;
+      border-radius: 10px;
+      background-color: #000;
+      max-width: 90%;
+      max-height: 70%;
+    }
+
+    #controls {
+      margin-top: 15px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #007BFF;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    #error-message {
+      color: red;
+      font-size: 18px;
+      display: none; /* Hidden by default */
+    }
+
+    #welcome-message {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #goodbye-message {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #FF6347;
+      display: none; /* Hidden by default */
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <img
+      id="bg"
+      src="{{ url_for('video_feed') }}"
+      alt="Video feed failed to load"
+      onerror="showError()"
+    >
+    <p id="error-message">Error: Unable to load the video feed. Please check your connection or try again later.</p>
+    <div id="controls">
+      <button onclick="startVideo()">Start Video</button>
+      <button onclick="stopVideo()">Stop Video</button>
+    </div>
+    <div id="welcome-message">Welcome to the Emotion Recognition App!</div>
+    <div id="goodbye-message">Bye, Keep Smiling!</div>
+  </div>
+  <script>
+    const videoElement = document.getElementById('bg');
+    const errorMessage = document.getElementById('error-message');
+    const goodbyeMessage = document.getElementById('goodbye-message');
+
+    function showError() {
+      errorMessage.style.display = 'block';
+    }
+
+    function startVideo() {
+      videoElement.src = "{{ url_for('video_feed') }}"; // Resumes video feed
+      errorMessage.style.display = 'none'; // Hide error if previously shown
+      goodbyeMessage.style.display = 'none'; // Hide goodbye message if previously shown
+    }
+
+    function stopVideo() {
+      videoElement.src = ''; // Stops video feed
+      goodbyeMessage.style.display = 'block'; // Show goodbye message
+    }
+  </script>
+</body>
+</html>
